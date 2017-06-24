@@ -7,6 +7,5 @@
 Simple client-server app with three screens.
 Made the frame for further ported to reactivecocoa from.
 
-![alt text](https://raw.githubusercontent.com/HackDeveloperUA/SimpleClientServerApp/master/ScreenShots/1.png)
-![alt text](https://raw.githubusercontent.com/HackDeveloperUA/SimpleClientServerApp/master/ScreenShots/2.png)
-![alt text](https://raw.githubusercontent.com/HackDeveloperUA/SimpleClientServerApp/master/ScreenShots/3.png)
+
+![alt text](https://raw.githubusercontent.com/HackDeveloperUA/SimpleClientServerApp/master/ScreenShots/0.png)  ![alt text](https://raw.githubusercontent.com/HackDeveloperUA/SimpleClientServerApp/master/ScreenShots/1.png)
