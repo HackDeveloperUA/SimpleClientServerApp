@@ -13,7 +13,6 @@
 // UI
 @property (weak, nonatomic) IBOutlet UIImageView *mainPhoto;
 @property (weak, nonatomic) IBOutlet UILabel *firstNameLabel;
-@property (weak, nonatomic) IBOutlet UILabel *lastNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *thePostLabel;
 @property (weak, nonatomic) IBOutlet UILabel *mainTextLabel;
 
@@ -42,7 +41,20 @@
                                                  NSLog(@"Not found detail cv");
                                              }];
 }
+
 #pragma mark - Action
+
+- (void)tapAction:(UITapGestureRecognizer *)tap
+{
+    if ([tap.view isKindOfClass:[UIImageView class]]) {
+        
+        UIImageView* imgFromGesture = (UIImageView*)tap.view;
+        PhotoModel* photo = [[PhotoModel alloc] initFromUIImage:imgFromGesture.image];
+        
+        NYTPhotosViewController* photoVC = [[NYTPhotosViewController alloc] initWithPhotos:@[photo]];
+        [self presentViewController:photoVC animated:YES completion:nil];
+    }
+}
 
 
 
@@ -56,35 +68,19 @@
                                             self.mainPhoto.image = image;
                                             self.mainPhoto.layer.masksToBounds = YES;
                                             self.mainPhoto.layer.cornerRadius  = CGRectGetWidth(self.mainPhoto.frame)/2;
+                                             
+                                             UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapAction:)];
+                                             tapRecognizer.numberOfTapsRequired = 1;
+                                             [self.mainPhoto addGestureRecognizer:tapRecognizer];
+                                         
                                          } failure:^(NSURLRequest* request, NSHTTPURLResponse* response, NSError* error) {
                                              
                                          }];
         
-    self.firstNameLabel.text = self.detailWorker.firstName;
-    self.lastNameLabel.text  = self.detailWorker.lastName;
+    self.firstNameLabel.text = [NSString stringWithFormat:@"%@ %@",self.detailWorker.firstName, self.detailWorker.lastName];
+
     self.thePostLabel.text = self.detailWorker.thePost;
     self.mainTextLabel.text = self.detailWorker.mainText;
-    
-    
-    UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapAction:)];
-    tapRecognizer.numberOfTapsRequired = 1;
-    [self.mainPhoto addGestureRecognizer:tapRecognizer];
 }
-
-
-
-- (void)tapAction:(UITapGestureRecognizer *)tap
-{
-    if ([tap.view isKindOfClass:[UIImageView class]]) {
-        
-        UIImageView* imgFromGesture = (UIImageView*)tap.view;
-        PhotoModel* photo = [[PhotoModel alloc] initFromUIImage:imgFromGesture.image];
-       
-        NYTPhotosViewController* photoVC = [[NYTPhotosViewController alloc] initWithPhotos:@[photo]];
-        [self presentViewController:photoVC animated:YES completion:nil];
-    }
-}
-
-
 
 @end
