@@ -50,7 +50,16 @@
 
 - (void) setupController {
     
-    [self.mainPhoto setImageWithURL:[NSURL URLWithString:self.detailWorker.photoURL]];
+    [self.mainPhoto setImageWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:self.detailWorker.photoURL]]
+                                placeholderImage:nil
+                                         success:^(NSURLRequest* request, NSHTTPURLResponse*  response, UIImage* image) {
+                                            self.mainPhoto.image = image;
+                                            self.mainPhoto.layer.masksToBounds = YES;
+                                            self.mainPhoto.layer.cornerRadius  = CGRectGetWidth(self.mainPhoto.frame)/2;
+                                         } failure:^(NSURLRequest* request, NSHTTPURLResponse* response, NSError* error) {
+                                             
+                                         }];
+        
     self.firstNameLabel.text = self.detailWorker.firstName;
     self.lastNameLabel.text  = self.detailWorker.lastName;
     self.thePostLabel.text = self.detailWorker.thePost;

@@ -64,7 +64,7 @@
 #pragma mark - UITableViewDataSource
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 70.f;
+    return 108.f;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -82,17 +82,20 @@
        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     
        DetailWorkerVC* detailVC = (DetailWorkerVC*)[storyboard instantiateViewControllerWithIdentifier:@"DetailWorkerVC"];
+       WorkerShortModel* worker = self.arrayWorkers[indexPath.row];
+
+       detailVC.linkOnFullCV = worker.linkOnFullCV;
        [self.navigationController pushViewController:detailVC animated:YES];
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    static NSString *CellIdentifier = @"Cell";
+    static NSString *CellIdentifier = @"WorkerCell";
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    WorkerCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] ;
+         cell = (WorkerCell*)[[WorkerCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     
     [self configureCell:cell atIndexPath:indexPath];
@@ -114,16 +117,23 @@
         }
         if (worker)
         {
-           UITableViewCell* workerCell = (UITableViewCell*)weakCell;
+           WorkerCell* workerCell = (WorkerCell*)weakCell;
            ANDispatchBlockToMainQueue(^{
-               workerCell.textLabel.text = [NSString stringWithFormat:@"%@ %@",worker.firstName, worker.lastName];
-               [workerCell.imageView setImageWithURL:[NSURL URLWithString:worker.photoURL]];
+               workerCell.nameLabel.text = [NSString stringWithFormat:@"%@ %@",worker.firstName, worker.lastName];
+              
+               [workerCell.mainPhoto setImageWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:worker.photoURL]]
+                          placeholderImage:nil
+                                   success:^(NSURLRequest* request, NSHTTPURLResponse*  response, UIImage* image) {
+                                       workerCell.mainPhoto.image = image;
+                                       workerCell.mainPhoto.layer.masksToBounds = YES;
+                                       workerCell.mainPhoto.layer.cornerRadius  = CGRectGetWidth(workerCell.mainPhoto.frame)/2;
+                                   } failure:^(NSURLRequest* request, NSHTTPURLResponse* response, NSError* error) {
+                                       
+                                   }];
            });
         }
     });
 }
-
-
 
 @end
 

@@ -71,16 +71,12 @@
     [self.HUD show:NO];
     self.view.userInteractionEnabled = YES;
     
-    NSLog(@"[self.accountData valueForKey:self.loginTextField.text] = %@", [self.accountData valueForKey:self.loginTextField.text]);
     
     if ([[self.accountData valueForKey:self.loginTextField.text] isEqualToString:self.passwordTextField.text])
     {
-        WorkersTVC* workVC = [[WorkersTVC alloc] init];
-        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:workVC];
-        //[navigationController pushViewController:workVC animated:YES];
-#warning See to
-        navigationController.navigationItem.title = @"Workers Apple";
-        [self presentViewController:navigationController animated:YES completion:nil];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        UINavigationController* navContr = (UINavigationController*)[storyboard instantiateViewControllerWithIdentifier:@"NavWorkersTVC"];
+        [self presentViewController:navContr animated:YES completion:nil];
         
     } else {
         

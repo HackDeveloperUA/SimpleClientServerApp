@@ -22,6 +22,9 @@
 //Model
 #import "WorkerShortModel.h"
 
+//Cells
+#import "WorkerCell.h"
+
 
 @interface WorkersTVC : UITableViewController
 
